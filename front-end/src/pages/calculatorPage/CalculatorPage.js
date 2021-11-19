@@ -1,14 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 
 import { Menu, Segment } from 'semantic-ui-react';
 
 import './CalculatorPage.css';
 
 const CalculatorPage = () => {
+    const location = useLocation(); 
 
-    const [activeItem, setActiveItem] = useState("bio");
+    const [activeItem, setActiveItem] = useState("Calculator");
+    const [userDetails, setUserDetails] = useState({});
 
     const handleItemClick = (e, { name }) => setActiveItem(name);
+    
+    useEffect(()=> {
+        console.log(location?.state);
+        setUserDetails(location?.state);
+    }, [])
+
+
 
     return(
         <div>
