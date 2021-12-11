@@ -5,7 +5,6 @@ import LoginPage from '../pages/loginPage/LoginPage';
 
 
 const ApplicationRoutes = () => {
-
     return(
         <BrowserRouter>
             <Routes>

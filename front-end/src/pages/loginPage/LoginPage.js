@@ -6,8 +6,8 @@ import { Button, Header, Icon, Segment, Input } from 'semantic-ui-react';
 import './LoginPage.css';
 
 const LoginPage = () => {
-
     const navigate = useNavigate();
+    
     const defaultUserDetails = {userName: '', email: ""};
 
     const [userDetails, setUserDetails] = useState(defaultUserDetails);
@@ -19,7 +19,6 @@ const LoginPage = () => {
     const onClickLoginButton = () => {
         navigate('/calculator',{state: userDetails});
     }
-
 
     return (
     <div className="ui raised very padded text container segment">
