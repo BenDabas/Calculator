@@ -11,6 +11,7 @@ const CalculatorPage = () => {
     const [activeItem, setActiveItem] = useState("Calculator");
     const [userDetails, setUserDetails] = useState({});
     const [calculatorText, setCalculatorText] = useState(0);
+    const [lastChar, setLastChar] = useState(0);
 
     const handleItemClick = (e, { name }) => setActiveItem(name);
     
@@ -20,8 +21,34 @@ const CalculatorPage = () => {
     }, [])
 
     const handleCalculatorButtons = ({target}) => {
-        console.log(target.value);
-        setCalculatorText(target.value);
+        if(calculatorText === 0)
+            setCalculatorText(target.value);
+        else
+            setCalculatorText(calculatorText+ target.value);
+            
+        setLastChar(target.value);
+    }
+
+    const handleEqualButton = () => {
+        // Forbids calculate when last char is operator.
+        if(!/[\*\-\+\/]/.test(lastChar)){
+            const answer = eval(calculatorText);
+            setCalculatorText(answer);
+        }
+    }
+
+    const handleClearButton = () => {
+        setCalculatorText(0);
+    }
+
+    const handleCalculatorOperators = ({target}) => {
+        // allows operators if not first char && if last char was integer.
+        const isValid = /[\*\-\+\/]/.test(target.value) && /\d/.test(lastChar);
+        if(isValid)
+        {
+            setCalculatorText(calculatorText+ target.value);
+            setLastChar(target.value);
+        }
     }
 
 
@@ -46,10 +73,10 @@ const CalculatorPage = () => {
                 <input type="text" className="calculator-screen" value={calculatorText} disabled/>
                 <div className="calculator-keys">
             
-                    <button className="operator calculator-button" onClick={handleCalculatorButtons} value="+">+</button>
-                    <button className="operator calculator-button" onClick={handleCalculatorButtons} value="-">-</button>
-                    <button className="operator calculator-button" onClick={handleCalculatorButtons} value="*">&times;</button>
-                    <button className="operator calculator-button" onClick={handleCalculatorButtons} value="/">&divide;</button>
+                    <button className="operator calculator-button" onClick={handleCalculatorOperators} value="+">+</button>
+                    <button className="operator calculator-button" onClick={handleCalculatorOperators} value="-">-</button>
+                    <button className="operator calculator-button" onClick={handleCalculatorOperators} value="*">&times;</button>
+                    <button className="operator calculator-button" onClick={handleCalculatorOperators} value="/">&divide;</button>
 
                     <button className="calculator-button" onClick={handleCalculatorButtons} value="7">7</button>
                     <button className="calculator-button" onClick={handleCalculatorButtons} value="8">8</button>
@@ -67,9 +94,9 @@ const CalculatorPage = () => {
 
 
                     <button className="calculator-button" onClick={handleCalculatorButtons} value="0">0</button>
-                    <button className="all-clear calculator-button" onClick={handleCalculatorButtons} value="all-clear">AC</button>
+                    <button className="all-clear calculator-button" onClick={handleClearButton} value="all-clear">AC</button>
 
-                    <button className="equal-sign calculator-button" onClick={handleCalculatorButtons} value="=">=</button>
+                    <button className="equal-sign calculator-button" onClick={handleEqualButton} value="=">=</button>
                 </div>
             </div>
         </div>
