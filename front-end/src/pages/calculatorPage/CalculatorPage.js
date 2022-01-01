@@ -1,35 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 
-import { Menu, Segment } from 'semantic-ui-react';
-
 import './CalculatorPage.css';
 
 const CalculatorPage = () => {
-    const location = useLocation(); 
+    const location = useLocation();     
 
-    const [activeItem, setActiveItem] = useState("Calculator");
     const [userDetails, setUserDetails] = useState({});
     const [calculatorText, setCalculatorText] = useState(0);
     const [lastChar, setLastChar] = useState(0);
-
-    const handleItemClick = (e, { name }) => setActiveItem(name);
+    const [lastFiveCharsArray, setLastFiveCharsArray] = useState([]);
     
     useEffect(()=> {
         console.log(location?.state);
         setUserDetails(location?.state);
     }, [])
 
+    const HandleLastFiveCharsArray = (lastCharPressed) => {
+        const tempArray = lastFiveCharsArray;
+        if(lastFiveCharsArray.length < 5)
+        {
+            tempArray[lastFiveCharsArray.length] = lastCharPressed ;
+        } else {
+            tempArray.shift();
+            tempArray[4] = lastCharPressed;
+        }
+        setLastFiveCharsArray(tempArray);
+    }
+
+
+    console.log({lastFiveCharsArray})
+
+
     const handleCalculatorButtons = ({target}) => {
         if(calculatorText === 0)
             setCalculatorText(target.value);
         else
-            setCalculatorText(calculatorText+ target.value);
+            setCalculatorText(calculatorText + target.value);
             
+        HandleLastFiveCharsArray(target.value);
         setLastChar(target.value);
     }
 
     const handleEqualButton = () => {
+        HandleLastFiveCharsArray("=");
         // Forbids calculate when last char is operator.
         if(!/[\*\-\+\/]/.test(lastChar)){
             const answer = eval(calculatorText);
@@ -46,6 +60,7 @@ const CalculatorPage = () => {
         const isValid = /[\*\-\+\/]/.test(target.value) && /\d/.test(lastChar);
         if(isValid)
         {
+            HandleLastFiveCharsArray(target.value);
             setCalculatorText(calculatorText+ target.value);
             setLastChar(target.value);
         }
@@ -54,21 +69,6 @@ const CalculatorPage = () => {
 
     return(
         <div>
-            <Segment inverted>
-                <Menu inverted pointing secondary>
-                <Menu.Item
-                    name='Calculator'
-                    active={activeItem === 'Calculator'}
-                    onClick={handleItemClick}
-                />
-                <Menu.Item
-                    name='History'
-                    active={activeItem === 'History'}
-                    onClick={handleItemClick}
-                />
-                </Menu>
-            </Segment>
-            
             <div className="calculator">
                 <input type="text" className="calculator-screen" value={calculatorText} disabled/>
                 <div className="calculator-keys">
