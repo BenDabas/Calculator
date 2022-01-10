@@ -21,6 +21,9 @@ const CalculatorReducer = (state = initialState, action) => {
 
             return {...state, lastCalculateArray: tempArray}
         }
+        case 'Calculator/Clear': {
+            return {...state, lastCalculateArray: []}
+        }
         default:
             return {...state};
     }
