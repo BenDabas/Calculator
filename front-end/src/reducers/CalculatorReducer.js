@@ -9,14 +9,14 @@ const CalculatorReducer = (state = initialState, action) => {
         case 'Calculator/AddChar': {
             const lastPressedChar = payload;
             const tempArray = state?.lastCalculateArray;
-            if(tempArray.length < 5)
+            if(tempArray.length < 20)
             {
                 tempArray[tempArray.length] = lastPressedChar
             }
             else
             {
                 tempArray.shift();
-                tempArray[4] = lastPressedChar;
+                tempArray[19] = lastPressedChar;
             }
 
             return {...state, lastCalculateArray: tempArray}
