@@ -1,36 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
+import { useDispatch } from 'react-redux';
+
+import { AddPressedCharAction } from '../../actions/CalculatorAction';
 
 import './CalculatorPage.css';
 
 const CalculatorPage = () => {
-    const location = useLocation();     
+    const location = useLocation();   
+    const dispatch = useDispatch();  
 
     const [userDetails, setUserDetails] = useState({});
     const [calculatorText, setCalculatorText] = useState(0);
     const [lastChar, setLastChar] = useState(0);
-    const [lastFiveCharsArray, setLastFiveCharsArray] = useState([]);
     
     useEffect(()=> {
-        console.log(location?.state);
         setUserDetails(location?.state);
     }, [])
-
-    const HandleLastFiveCharsArray = (lastCharPressed) => {
-        const tempArray = lastFiveCharsArray;
-        if(lastFiveCharsArray.length < 5)
-        {
-            tempArray[lastFiveCharsArray.length] = lastCharPressed ;
-        } else {
-            tempArray.shift();
-            tempArray[4] = lastCharPressed;
-        }
-        setLastFiveCharsArray(tempArray);
-    }
-
-
-    console.log({lastFiveCharsArray})
-
 
     const handleCalculatorButtons = ({target}) => {
         if(calculatorText === 0)
@@ -38,12 +24,12 @@ const CalculatorPage = () => {
         else
             setCalculatorText(calculatorText + target.value);
             
-        HandleLastFiveCharsArray(target.value);
+        dispatch(AddPressedCharAction(target.value));
         setLastChar(target.value);
     }
 
     const handleEqualButton = () => {
-        HandleLastFiveCharsArray("=");
+        dispatch(AddPressedCharAction("="));
         // Forbids calculate when last char is operator.
         if(!/[\*\-\+\/]/.test(lastChar)){
             const answer = eval(calculatorText);
@@ -60,7 +46,7 @@ const CalculatorPage = () => {
         const isValid = /[\*\-\+\/]/.test(target.value) && /\d/.test(lastChar);
         if(isValid)
         {
-            HandleLastFiveCharsArray(target.value);
+            dispatch(AddPressedCharAction(target.value));
             setCalculatorText(calculatorText+ target.value);
             setLastChar(target.value);
         }
