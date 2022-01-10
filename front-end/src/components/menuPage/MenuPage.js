@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 
-import { Menu, Segment } from 'semantic-ui-react';
+import { Button, Menu, Segment } from 'semantic-ui-react';
 
 
 const MenuPage = () => {
     const location = useLocation(); 
     const navigate = useNavigate();
+    const userName = localStorage.getItem("userName");
+    const email = localStorage.getItem("email");
 
     const [activeItem, setActiveItem] = useState("Calculator");
 
@@ -30,6 +32,13 @@ const MenuPage = () => {
             active={activeItem === 'History'}
             onClick={handleItemClick}
         />
+        <Menu.Menu position='right'>
+
+        <Menu.Item><Button color="grey">Logout</Button></Menu.Item>
+        <Menu.Item position='right'
+            name={`Hello ${userName}`}
+            />
+        </Menu.Menu>
         </Menu>
     </Segment>)
 }

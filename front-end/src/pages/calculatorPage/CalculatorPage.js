@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
 import { useDispatch } from 'react-redux';
 
 import { AddPressedCharAction } from '../../actions/CalculatorAction';
@@ -7,16 +6,15 @@ import { AddPressedCharAction } from '../../actions/CalculatorAction';
 import './CalculatorPage.css';
 
 const CalculatorPage = () => {
-    const location = useLocation();   
     const dispatch = useDispatch();  
 
-    const [userDetails, setUserDetails] = useState({});
+    // const [userDetails, setUserDetails] = useState({});
     const [calculatorText, setCalculatorText] = useState(0);
     const [lastChar, setLastChar] = useState(0);
     
-    useEffect(()=> {
-        setUserDetails(location?.state);
-    }, [])
+    // useEffect(()=> {
+    //     setUserDetails(location?.state);
+    // }, [])
 
     const handleCalculatorButtons = ({target}) => {
         if(calculatorText === 0)

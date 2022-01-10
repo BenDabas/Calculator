@@ -7,13 +7,13 @@ import './LoginPage.css';
 
 const LoginPage = () => {
     const navigate = useNavigate();
-    
     const defaultUserDetails = {userName: '', email: ""};
 
     const [userDetails, setUserDetails] = useState(defaultUserDetails);
 
     const handleUserDetailsChange = ({target}) => {
         setUserDetails({...userDetails, [target?.name]: target?.value});
+        localStorage.setItem(target?.name, target?.value);
     }  
 
     const onClickLoginButton = () => {
